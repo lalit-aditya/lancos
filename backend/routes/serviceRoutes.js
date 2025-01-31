@@ -1,51 +1,40 @@
 const express = require("express");
+const Service = require("../models/Service");
 const router = express.Router();
-const Service = require("../models/Service"); // ✅ Corrected path
 
-// Get all services
-router.get("/", async (req, res) => {
-  try {
-    const services = await Service.find();
-    res.json(services);
-  } catch (error) {
-    console.error("Error fetching services:", error);
-    res.status(500).json({ message: "Error fetching services" });
-  }
-});
-
-// Add a new service
+// Create a new service for the logged-in user using their email
 router.post("/", async (req, res) => {
   try {
-    const { name, image, description, pricing } = req.body;
+    const { name, image, description, pricing, email } = req.body;
 
-    if (!name || !image || !description || !pricing) {
-      return res.status(400).json({ message: "All fields are required!" });
+    if (!email) {
+      return res.status(400).json({ success: false, message: "Email is required!" });
     }
 
-    const newService = new Service({ name, image, description, pricing });
+    const newService = new Service({ name, image, description, pricing, email });
     await newService.save();
-
     res.status(201).json(newService);
   } catch (error) {
-    console.error("Error adding service:", error);
-    res.status(500).json({ message: "Error adding service" });
+    console.error("🔥 Error adding service:", error);
+    res.status(500).json({ success: false, message: "Internal Server Error" });
   }
 });
 
-// Delete a service
-router.delete("/:id", async (req, res) => {
+// Get all services for a specific user based on email
+router.get("/", async (req, res) => {
   try {
-    const deletedService = await Service.findByIdAndDelete(req.params.id);
+    const { email } = req.query;
 
-    if (!deletedService) {
-      return res.status(404).json({ message: "Service not found!" });
+    if (!email) {
+      return res.status(400).json({ success: false, message: "Email is required!" });
     }
 
-    res.json({ message: "Service deleted successfully" });
+    const services = await Service.find({ email });
+    res.json(services);
   } catch (error) {
-    console.error("Error deleting service:", error);
-    res.status(500).json({ message: "Error deleting service" });
+    console.error("🔥 Error fetching services:", error);
+    res.status(500).json({ success: false, message: "Internal Server Error" });
   }
 });
 
-module.exports = router; // ✅ Corrected export
+module.exports = router;

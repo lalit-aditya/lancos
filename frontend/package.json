@@ -3,13 +3,21 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@radix-ui/react-dialog": "^1.1.5",
     "bcrypt": "^5.1.1",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
     "cra-template": "1.2.0",
+    "lucide-react": "^0.474.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-router-dom": "^6.29.0",
     "react-scripts": "^5.0.1",
-    "shadcn": "^2.3.0"
+    "shadcn": "^2.3.0",
+    "shadcn-ui": "^0.9.4",
+    "tailwind-merge": "^3.0.1",
+    "tailwind-variants": "^0.3.1",
+    "tailwindcss-animate": "^1.0.7"
   },
   "scripts": {
     "start": "set NODE_OPTIONS=--openssl-legacy-provider && set PORT=3010 && react-scripts start",
@@ -43,6 +51,6 @@
     "eslint-plugin-react": "^7.37.4",
     "eslint-plugin-react-hooks": "^5.1.0",
     "postcss": "^8.5.1",
-    "tailwindcss": "^4.0.0"
+    "tailwindcss": "^4.0.1"
   }
 }

@@ -1,15 +1,17 @@
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("./db");
-const User = require("./models/User");
 const bcrypt = require("bcryptjs");
+const User = require("./models/User");
+const Service = require("./models/Service");
 const serviceRoutes = require("./routes/serviceRoutes");
-const service = require("./models/Service");
 
 const app = express();
 app.use(express.json());
 app.use(cors());
 app.use("/api/services", serviceRoutes);
+
+// Register API
 app.post("/api/register", async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -34,6 +36,7 @@ app.post("/api/register", async (req, res) => {
   }
 });
 
+// Login API
 app.post("/api/login", async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -52,12 +55,12 @@ app.post("/api/login", async (req, res) => {
       return res.status(400).json({ success: false, message: "Invalid email or password." });
     }
 
-    res.json({ success: true, message: "✅ Login successful!" });
+    res.json({ success: true, message: "✅ Login successful!", userEmail: email });
   } catch (error) {
     console.error("❌ Error logging in:", error);
     res.status(500).json({ success: false, message: "Internal Server Error" });
   }
 });
 
-const PORT = process.env.PORT || 5011; // Change to 5001
+const PORT = process.env.PORT || 5011;
 app.listen(PORT, () => console.log(`✅ Server running on port ${PORT}`));
